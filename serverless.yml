@@ -1,0 +1,27 @@
+service: apig-lambda-proxy-binary-response
+
+plugins:
+  - serverless-apigw-binary
+
+custom:
+  apigwBinary:
+    types:
+      - '*/*' # Using */* doesn't have side effects that I can tell. The HTML response works fine.
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+functions:
+  bits:
+    handler: handler.bits
+    events:
+      - http:
+          path: /bits
+          method: get
+  html:
+    handler: handler.html
+    events:
+      - http:
+          path: /
+          method: get
