@@ -1,0 +1,7 @@
+.gitignore
+yarn.lock
+*.zip
+.serverless/
+.prettierrc
+.prettierignore
+*.png

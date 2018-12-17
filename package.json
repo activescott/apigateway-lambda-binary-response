@@ -8,8 +8,9 @@
     "serverless-apigw-binary": "^0.4.4"
   },
   "scripts": {
-    "deploy": "serverless deploy -v",
-    "lint": "prettier --write \"./**/*.js\""
+    "deploy": "serverless deploy",
+    "destroy": "serverless remove",
+    "lint": "prettier --write \"./**/*.{js,md,yml,json}\""
   },
   "devDependencies": {
     "prettier": "1.15.3"

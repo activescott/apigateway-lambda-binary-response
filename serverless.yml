@@ -6,7 +6,7 @@ plugins:
 custom:
   apigwBinary:
     types:
-      - '*/*' # Using */* doesn't have side effects that I can tell. The HTML response works fine.
+      - "*/*" # Using */* doesn't have side effects that I can tell. The HTML response works fine.
 
 provider:
   name: aws
