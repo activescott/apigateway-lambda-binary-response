@@ -1,4 +1,6 @@
-service: apig-lambda-proxy-binary-response
+service: demo-option1-binarymediatypes
+app: demo-option1-binarymediatypes
+tenant: activescott
 
 plugins:
   - serverless-apigw-binary
@@ -13,11 +15,23 @@ provider:
   runtime: nodejs8.10
 
 functions:
-  bits:
-    handler: handler.bits
+  binary:
+    handler: handler.binary
     events:
       - http:
-          path: /bits
+          path: /binary/{pathvar+}
+          method: get
+  png:
+    handler: handler.png
+    events:
+      - http:
+          path: png
+          method: get
+  jpg:
+    handler: handler.jpg
+    events:
+      - http:
+          path: jpg
           method: get
   html:
     handler: handler.html

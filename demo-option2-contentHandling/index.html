@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+  </head>
+
+  <div id="valid" style="border: 1px solid gray">
+    These should all work and load valid images:
+  </div>
+
+  <script lang="javascript">
+    main()
+
+    async function main() {
+      const validPaths = [
+        "png",
+        "jpg",
+        "binary/png.png",
+        "binary/jpg.jpg"
+      ]
+      await addPathsToList(validPaths, document.querySelector("#valid"))
+    }
+
+    async function addPathsToList(paths, parentElm) {
+      let ul = document.createElement("ul")
+      parentElm.appendChild(ul)
+      paths.forEach(async path => {
+        let contentType = "ERROR"
+        try {
+          const response = await fetch(path)
+          contentType = response.headers.get('Content-type')
+        } catch (err) {
+          console.error(err)
+        }
+        const contentTypeColor = contentType.indexOf("image") >=0 ? "currentColor" : "red"
+
+        const img = document.createElement("img")
+        img.style.cssText = "border: 1px solid orange; width: 32px; height: 32px"
+        img.src = path
+        const li = document.createElement("li")
+        li.appendChild(img)
+        li.append(` ${path}`)
+        const span = document.createElement("span")
+        span.style.color = contentTypeColor
+        span.append(` (Content-Type: ${contentType})`)
+        li.appendChild(span)
+        ul.appendChild(li)
+      })
+    }
+  </script>
+</html>

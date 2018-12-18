@@ -1,0 +1,60 @@
+service: demo-option2-contenthandling
+app: demo-option2-contenthandling
+tenant: activescott
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+plugins:
+  - serverless-apigwy-binary
+
+functions:
+  binary:
+    handler: handler.binary
+    events:
+      - http:
+          path: binary/{pathvar+}
+          method: get
+          integration: lambda
+          contentHandling: CONVERT_TO_BINARY
+          response:
+            headers: # see https://serverless.com/framework/docs/providers/aws/events/apigateway#responses
+              Content-Type: "'application/octet-stream'" # <<< This doesn't seem to be used by APIG. APIG just echos back whatever is in the Accept request header
+
+  png:
+    handler: handler.png
+    events:
+      - http:
+          path: png/
+          method: get
+          integration: lambda
+          contentHandling: CONVERT_TO_BINARY
+          response:
+            headers: # see https://serverless.com/framework/docs/providers/aws/events/apigateway#responses
+              Content-Type: "'image/png'" # <<< This doesn't seem to be used by APIG. APIG just echos back whatever is in the Accept request header
+
+  jpg:
+    handler: handler.jpg
+    events:
+      - http:
+          path: jpg/
+          method: get
+          integration: lambda
+          contentHandling: CONVERT_TO_BINARY
+          response:
+            headers: # see https://serverless.com/framework/docs/providers/aws/events/apigateway#responses
+              Content-Type: "'image/jpeg'" # <<< This doesn't seem to be used by APIG. APIG just echos back whatever is in the Accept request header
+
+  html:
+    handler: handler.html
+    events:
+      - http:
+          path: /
+          method: get
+          integration: lambda
+          # NOTE: No contentHandling
+          response:
+            headers: # see https://serverless.com/framework/docs/providers/aws/events/apigateway#responses
+              Content-Type: "'text/html'" # <<< This doesn't seem to be used by APIG. APIG just echos back whatever is in the Accept request header
+            template: $input.path('$.body')
