@@ -34,7 +34,24 @@ If you want all methods of all resources to attempt to convert data to binary, t
 1. This is the only option when using [Lambda Proxy Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started-with-lambda-integration.html) (and not the Lambda Custom Integration).
 2. Apparently, this applies this behavior to all methods in your API. However, since you set `isBase64Encoded: false` in the Lambda function's response when using Lambda Proxy Integration, it appears you can control this. Specifically, when you want to return text-based content (e.g. HTML, JSON) just set `isBase64Encoded: false` in your Lambda Proxy method and it seems to work fine (see the `html` function in the file `demo-option1-binaryMediaTypes/handler.js`).
 
-### Example
+### Examples
+
+
+#### Example 1: serverless-aws-static-file-handler
+
+Use the [`serverless-aws-static-file-handler`](https://github.com/activescott/serverless-aws-static-file-handler) and setup the the plugin in your `serverless.yml` like so:
+
+    plugins:
+      - serverless-aws-static-file-handler/plugins/BinaryMediaTypes
+    
+    custom:
+      apiGateway:
+        binaryMediaTypes: # Put the accept headers you want to trigger APIG to do binary conversions here
+          - "image/png"  # This will only trigger binary conversion when the request includes Accept: image/png header
+          - "image/jpeg" # add any other media types you want to be treated as binary
+
+
+#### Example 2: maciejtreder/serverless-apigw-binary
 
 Use the [`serverless-apigw-binary` Serverless plugin from maciejtreder](https://github.com/maciejtreder/serverless-apigw-binary) (not to be confused with the [`serverless-apigwy-binary` Serverless plugin from ryanmurakami](https://github.com/ryanmurakami/serverless-apigwy-binary)) and update your `serverless.yml` to call the plugin like so:
 
@@ -89,12 +106,7 @@ Then on the functions that you want to conver the body to binary set the `conten
 
 **NOTE:** This all assumes that ryanmurakami/serverless-apigwy-binary#5 is merged which fixes a recent issue in the serverless-apigwy-binary plugin.
 
-# Misc
-
-Also note the following stackoverflow thread with relevant info: https://stackoverflow.com/q/53510286
-
-
-# How to verify
+### How to verify
 You can verify the contentHandling value by running the following AWS CLI Console commands:
 
     # Get the REST API ID:
@@ -106,3 +118,7 @@ You can verify the contentHandling value by running the following AWS CLI Consol
     # Get the method (which includes all integration responses)
     aws apigateway get-method --rest-api-id vcnes1h9b6 --resource-id fzdcvq --http-method GET
 
+
+# Misc
+
+Also note the following stackoverflow thread with relevant info: https://stackoverflow.com/q/53510286
