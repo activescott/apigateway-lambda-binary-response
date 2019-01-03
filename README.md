@@ -36,7 +36,6 @@ If you want all methods of all resources to attempt to convert data to binary, t
 
 ### Examples
 
-
 #### Example 1: serverless-aws-static-file-handler
 
 Use the [`serverless-aws-static-file-handler`](https://github.com/activescott/serverless-aws-static-file-handler) and setup the the plugin in your `serverless.yml` like so:
@@ -65,8 +64,6 @@ Use the [`serverless-apigw-binary` Serverless plugin from maciejtreder](https://
           - '*/*' # This will trigger binary conversion on all requests 
 
 The types are Accept _request_ header types that trigger APIG to allow conversion to binary responses. So as long as you include one of these `Accept` header values in your _request_ it will do the conversion when the lambda responses' `isBase64Encoded` properrty is set to `true`.
-
-curl -H "Accept: image/png" https://gibberish.execute-api.us-east-1.amazonaws.com/dev/bits
 
 
 ## Option 2: Set `contentHandling` on the Integration Request/Response
